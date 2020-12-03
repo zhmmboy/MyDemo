@@ -1,0 +1,7 @@
+E:\WorkGit\MyDemo\MyConsole\bin\Debug\MyConsole.exe.config
+E:\WorkGit\MyDemo\MyConsole\bin\Debug\MyConsole.exe
+E:\WorkGit\MyDemo\MyConsole\bin\Debug\MyConsole.pdb
+E:\WorkGit\MyDemo\MyConsole\obj\Debug\MyConsole.csprojAssemblyReference.cache
+E:\WorkGit\MyDemo\MyConsole\obj\Debug\MyConsole.csproj.CoreCompileInputs.cache
+E:\WorkGit\MyDemo\MyConsole\obj\Debug\MyConsole.exe
+E:\WorkGit\MyDemo\MyConsole\obj\Debug\MyConsole.pdb
