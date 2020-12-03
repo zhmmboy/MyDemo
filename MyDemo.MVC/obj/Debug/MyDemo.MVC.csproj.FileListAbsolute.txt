@@ -83,3 +83,4 @@ E:\WorkGit\MyDemo\MyDemo.MVC\obj\Debug\MyDemo.MVC.csproj.CoreCompileInputs.cache
 E:\WorkGit\MyDemo\MyDemo.MVC\obj\Debug\MyDemo.MVC.csproj.CopyComplete
 E:\WorkGit\MyDemo\MyDemo.MVC\obj\Debug\MyDemo.MVC.dll
 E:\WorkGit\MyDemo\MyDemo.MVC\obj\Debug\MyDemo.MVC.pdb
+E:\WorkGit\MyDemo\MyDemo.MVC\obj\Debug\MyDemo.MVC.csprojAssemblyReference.cache
