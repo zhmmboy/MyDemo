@@ -73,3 +73,4 @@ E:\WorkGit\MyDemo\MyDemo.WebUI\obj\Debug\MyDemo.WebUI.csproj.CoreCompileInputs.c
 E:\WorkGit\MyDemo\MyDemo.WebUI\obj\Debug\MyDemo.WebUI.csproj.CopyComplete
 E:\WorkGit\MyDemo\MyDemo.WebUI\obj\Debug\MyDemo.WebUI.dll
 E:\WorkGit\MyDemo\MyDemo.WebUI\obj\Debug\MyDemo.WebUI.pdb
+E:\WorkGit\MyDemo\MyDemo.WebUI\obj\Debug\MyDemo.WebUI.csprojAssemblyReference.cache

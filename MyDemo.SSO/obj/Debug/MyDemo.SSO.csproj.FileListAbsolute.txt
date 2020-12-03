@@ -83,3 +83,4 @@ E:\WorkGit\MyDemo\MyDemo.SSO\obj\Debug\MyDemo.SSO.csproj.CoreCompileInputs.cache
 E:\WorkGit\MyDemo\MyDemo.SSO\obj\Debug\MyDemo.SSO.csproj.CopyComplete
 E:\WorkGit\MyDemo\MyDemo.SSO\obj\Debug\MyDemo.SSO.dll
 E:\WorkGit\MyDemo\MyDemo.SSO\obj\Debug\MyDemo.SSO.pdb
+E:\WorkGit\MyDemo\MyDemo.SSO\obj\Debug\MyDemo.SSO.csprojAssemblyReference.cache
