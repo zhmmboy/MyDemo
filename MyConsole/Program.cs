@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MyEntity;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -9,21 +10,6 @@ using System.Threading.Tasks;
 
 namespace MyConsole
 {
-    class Student
-    {
-        public string UID { get; set; }
-        public string UName { get; set; }
-        public int UAage { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            var stu = obj as Student;
-            return stu.UID == this.UID &&
-                    stu.UName == this.UName &&
-                    stu.UAage == this.UAage;
-        }
-    }
-
     /// <summary>
     /// 员工计数器
     /// </summary>
@@ -423,6 +409,18 @@ namespace MyConsole
 
             //int[] arrInt = new int[] { 1, 2, 3, 4, 5 };
             //Array.Find(arrInt, t => t > 10);
+
+            #endregion
+
+            #region Linq 
+
+            List<Student> lstStu = new List<Student>();
+            for (var i = 0; i < 100; i++)
+                lstStu.Add(new Student() { UID = "00" + i, UName = "Tom" + i, UAge = 20 + i });
+
+            Console.WriteLine("查询50岁以上的人:");
+            var lstGenThan50 = (from lst in lstStu where lst.UAge > 50 select lst).ToList();
+            lstGenThan50.ForEach(t => Console.WriteLine(JsonConvert.SerializeObject(t)));
 
             #endregion
 
