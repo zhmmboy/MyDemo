@@ -27,7 +27,7 @@ namespace MyConsole
     /// <summary>
     /// 员工计数器
     /// </summary>
-    class StuCount:IComparable
+    class StuCount : IComparable
     {
         public string UID { get; set; }
         public string UName { get; set; }
@@ -363,54 +363,68 @@ namespace MyConsole
 
             #region 数据集合12 有序集合
 
-            SortedList sortedList = new SortedList();
-            sortedList.Add(1, "1");
-            sortedList.Add(10, "10");
-            sortedList.Add(9, "9");
-            sortedList.Add(7, "7");
-            sortedList.Add(12, "12");
-            sortedList[12] = "13";
-            Console.WriteLine("有序集合：");
-            foreach (var item in sortedList.GetKeyList())
-            {
-                Console.WriteLine("item:" + sortedList[item].ToString());
-            }
+            //SortedList sortedList = new SortedList();
+            //sortedList.Add(1, "1");
+            //sortedList.Add(10, "10");
+            //sortedList.Add(9, "9");
+            //sortedList.Add(7, "7");
+            //sortedList.Add(12, "12");
+            //sortedList[12] = "13";
+            //Console.WriteLine("有序集合：");
+            //foreach (var item in sortedList.GetKeyList())
+            //{
+            //    Console.WriteLine("item:" + sortedList[item].ToString());
+            //}
 
             #endregion
-
 
             #region 线程安全的队列
 
             //1.线程安全的队列
-            ConcurrentQueue<int> queue = new System.Collections.Concurrent.ConcurrentQueue<int>();
-            queue.Enqueue(1);
-            int i;
-            queue.TryPeek(out i);
-            queue.TryDequeue(out i);
+            //ConcurrentQueue<int> queue = new System.Collections.Concurrent.ConcurrentQueue<int>();
+            //queue.Enqueue(1);
+            //int i;
+            //queue.TryPeek(out i);
+            //queue.TryDequeue(out i);
 
-            //线程安全的栈
-            ConcurrentStack<int> concurrentStack = new ConcurrentStack<int>();
-            concurrentStack.Push(1);
-            concurrentStack.TryPeek(out i);
-            concurrentStack.TryPop(out i);
+            ////线程安全的栈
+            //ConcurrentStack<int> concurrentStack = new ConcurrentStack<int>();
+            //concurrentStack.Push(1);
+            //concurrentStack.TryPeek(out i);
+            //concurrentStack.TryPop(out i);
 
-            //线程安全的对象
-            ConcurrentBag<int> concurrentBag = new ConcurrentBag<int>();
-            concurrentBag.Add(1);
-            concurrentBag.Add(2);
-            concurrentBag.Add(3);
-            concurrentBag.Add(4);
+            ////线程安全的对象
+            //ConcurrentBag<int> concurrentBag = new ConcurrentBag<int>();
+            //concurrentBag.Add(1);
+            //concurrentBag.Add(2);
+            //concurrentBag.Add(3);
+            //concurrentBag.Add(4);
 
-            //线程安全的字典
-            ConcurrentDictionary<int, string> dicInt = new System.Collections.Concurrent.ConcurrentDictionary<int, string>();
-            dicInt[1] = "001";
-            dicInt[2] = "002";
-            dicInt[3] = "003";
-            dicInt[4] = "004";
-            dicInt[5] = "005";
+            ////线程安全的字典
+            //ConcurrentDictionary<int, string> dicInt = new System.Collections.Concurrent.ConcurrentDictionary<int, string>();
+            //dicInt[1] = "001";
+            //dicInt[2] = "002";
+            //dicInt[3] = "003";
+            //dicInt[4] = "004";
+            //dicInt[5] = "005";
 
             #endregion
 
+            #region 泛型委托
+
+            Action<int> a = new Action<int>(TestMethod1);
+            Console.WriteLine("我是无返回值的泛型委托Action：");
+            a(10);
+
+            Console.WriteLine("我是有返回值的泛型委托Fun:");
+            Func<int, string> f = new System.Func<int, string>(TestMethod2);
+            var rt = f(18);
+            Console.WriteLine("我的返回值为：" + rt);
+
+            int[] arrInt = new int[] { 1, 2, 3, 4, 5 };
+            Array.Find(arrInt, t => t > 10);
+
+            #endregion
 
             Console.ReadKey();
         }
@@ -419,18 +433,18 @@ namespace MyConsole
         /// <summary>
         /// 为了测试git，这是一个测试方法
         /// </summary>
-        static void TestMethod1()
+        static void TestMethod1<T>(T t)
         {
-
+            Console.WriteLine("我是 TestMethod1 方法。传入的参数为：" + t);
         }
-
 
         /// <summary>
         /// 为了测试git，这是一个测试方法
         /// </summary>
-        static void TestMethod2()
+        static string TestMethod2(int age)
         {
-
+            Console.WriteLine("我是 TestMethod2 方法。");
+            return string.Format("我今年 {0} 岁了。", age);
         }
 
 
@@ -439,7 +453,7 @@ namespace MyConsole
         /// </summary>
         static void TestMethod3()
         {
-
+            Console.WriteLine("我是 TestMethod3 方法。");
         }
 
         /// <summary>
