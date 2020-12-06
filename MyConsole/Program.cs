@@ -419,7 +419,7 @@ namespace MyConsole
         /// <summary>
         /// 为了测试git，这是一个测试方法
         /// </summary>
-        static void TestMethod()
+        static void TestMethod1()
         {
 
         }
