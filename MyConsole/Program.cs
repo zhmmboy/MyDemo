@@ -408,6 +408,7 @@ namespace MyConsole
             dicInt[3] = "003";
             dicInt[4] = "004";
             dicInt[5] = "005";
+            dicInt[7] = "007";
 
             #endregion
 
