@@ -416,6 +416,15 @@ namespace MyConsole
             Console.ReadKey();
         }
 
+
+        /// <summary>
+        /// 为了测试git，这是一个测试方法
+        /// </summary>
+        static void TestMethod()
+        {
+
+        }
+
         /// <summary>
         /// 做一些操作
         /// </summary>
