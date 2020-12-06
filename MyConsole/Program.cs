@@ -412,17 +412,17 @@ namespace MyConsole
 
             #region 泛型委托
 
-            Action<int> a = new Action<int>(TestMethod1);
-            Console.WriteLine("我是无返回值的泛型委托Action：");
-            a(10);
+            //Action<int> a = new Action<int>(TestMethod1);
+            //Console.WriteLine("我是无返回值的泛型委托Action：");
+            //a(10);
 
-            Console.WriteLine("我是有返回值的泛型委托Fun:");
-            Func<int, string> f = new System.Func<int, string>(TestMethod2);
-            var rt = f(18);
-            Console.WriteLine("我的返回值为：" + rt);
+            //Console.WriteLine("我是有返回值的泛型委托Fun:");
+            //Func<int, string> f = new System.Func<int, string>(TestMethod2);
+            //var rt = f(18);
+            //Console.WriteLine("我的返回值为：" + rt);
 
-            int[] arrInt = new int[] { 1, 2, 3, 4, 5 };
-            Array.Find(arrInt, t => t > 10);
+            //int[] arrInt = new int[] { 1, 2, 3, 4, 5 };
+            //Array.Find(arrInt, t => t > 10);
 
             #endregion
 
