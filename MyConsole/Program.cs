@@ -402,7 +402,11 @@ namespace MyConsole
             concurrentBag.Add(4);
 
             //线程安全的字典
-
+            ConcurrentDictionary<int, string> dicInt = new System.Collections.Concurrent.ConcurrentDictionary<int, string>();
+            dicInt[1] = "001";
+            dicInt[2] = "002";
+            dicInt[3] = "003";
+            dicInt[4] = "004";
 
             #endregion
 
