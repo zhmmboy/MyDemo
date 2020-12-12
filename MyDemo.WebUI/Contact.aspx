@@ -14,4 +14,7 @@
         <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
         <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
     </address>
+
+
+    <asp:Button ID="btnClick" runat="server" Text="测试多线程" OnClick="btnClick_Click" />
 </asp:Content>

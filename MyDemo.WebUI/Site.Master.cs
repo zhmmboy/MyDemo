@@ -14,8 +14,8 @@ namespace MyDemo.WebUI
         protected void Page_Load(object sender, EventArgs e)
         {
             //验证登陆
-            new BasePage().IsLogin();
-            LoginUserName = (Session["LoginUser"] as dynamic).userName;
+            //new BasePage().IsLogin();
+            // LoginUserName = (Session["LoginUser"] as dynamic).userName;
         }
     }
 }

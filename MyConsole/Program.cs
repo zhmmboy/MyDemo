@@ -4,8 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyConsole
@@ -410,23 +414,351 @@ namespace MyConsole
             //int[] arrInt = new int[] { 1, 2, 3, 4, 5 };
             //Array.Find(arrInt, t => t > 10);
 
+            ////无返回值，一个参数的委托
+            //Action<int> a = new Action<int>(Add);
+            //a(1000);
+
+
+            ////有返回值两个参数的委托
+            //Func<int, int, int> f = new Func<int, int, int>(Add2);
+            //f(12, 20);
+
+
+            //List<Student> lstStu = new List<Student>();
+            //lstStu.Add(new Student("001", "Tom", 12, "测试地址", "137348934301"));
+            //lstStu.Add(new Student("002", "Tom2", 20, "测试地址2", "137348934302"));
+            //lstStu.Add(new Student("003", "Tom3", 18, "测试地址3", "137348934303"));
+            //lstStu.Add(new Student("004", "Tom4", 19, "测试地址4", "137348934304"));
+            //lstStu.Add(new Student("005", "Tom5", 30, "测试地址5", "137348934305"));
+            //lstStu.Add(new Student("006", "Tom6", 32, "测试地址6", "137348934306"));
+
+            ////这是一个返回bool类型的委托，有且只有一个参数
+            //Predicate<Student> p = new Predicate<Student>(Select);
+            //Func<Student, bool> f2 = new Func<Student, bool>(Select);
+            //var lstStuNew = lstStu.Where(f2).ToList();
+            //lstStuNew.ForEach(t => Console.WriteLine("筛选出来的人员姓名：" + JsonConvert.SerializeObject(t)));
             #endregion
 
             #region Linq 
 
-            List<Student> lstStu = new List<Student>();
-            for (var i = 0; i < 100; i++)
-                lstStu.Add(new Student() { UID = "00" + i, UName = "Tom" + i, UAge = 20 + i });
+            //List<Student> lstStu = new List<Student>();
+            //for (var i = 0; i < 100; i++)
+            //    lstStu.Add(new Student() { UID = "00" + i, UName = "Tom" + i, UAge = 20 + i });
 
-            Console.WriteLine("查询50岁以上的人:");
-            var lstGenThan50 = (from lst in lstStu where lst.UAge > 50 select lst).ToList();
-            lstGenThan50.ForEach(t => Console.WriteLine(JsonConvert.SerializeObject(t)));
+            //Console.WriteLine("查询50岁以上的人:");
+            //var lstGenThan50 = (from lst in lstStu where lst.UAge > 50 select lst).ToList();
+            //lstGenThan50.ForEach(t => Console.WriteLine(JsonConvert.SerializeObject(t)));
+
+            #endregion
+
+            #region 匿名方法
+
+            //匿名方法是通过delegate关键字创建委托实例来声明的，例如：
+
+            //NumberChanage nc = delegate (int i)
+            //{
+            //    Console.WriteLine("使用匿名方法实现委托。" + i);
+            //};
+            //nc(100);
+
+            //NumberChanage nc2 = new NumberChanage(Add);
+            //nc2(200);
+
+            #endregion
+
+            #region Lambda 是一种匿名函数，类似于函数式编程的表达式
+            //lambda表达式简化了编程中的代码量
+            //可以包含表达式和语句
+            //可以创建委托或者表达式目录树类型
+            //所有表达式都使用 => 表示，运算符读作 goes to
+            //表达式左边为输入参数(如果有)，右边为表达式或者语句块
+            //例如:
+            //delegate int del(int i,int j);
+            //del myDel = (x,y)=> x * y;
+            //
+
+            //del myDel = (x, y) => x * y;
+            //var sum = myDel(10, 6);
+            //Console.Write("结果：" + sum);
+
+            //List<Student> lstStu = new List<Student>();
+            //lstStu.Add(new Student("001", "Tom", 12, "测试地址", "137348934301"));
+            //lstStu.Add(new Student("002", "Tom2", 20, "测试地址2", "137348934302"));
+            //lstStu.Add(new Student("003", "Tom3", 18, "测试地址3", "137348934303"));
+            //lstStu.Add(new Student("004", "Tom4", 19, "测试地址4", "137348934304"));
+            //lstStu.Add(new Student("005", "Tom5", 30, "测试地址5", "137348934305"));
+            //lstStu.Add(new Student("006", "Tom6", 32, "测试地址6", "137348934306"));
+
+            ////查询年龄大于20的人
+            ////匿名方法
+            //IEnumerable<Student> q = lstStu.Where(delegate (Student s) { return s.UAge > 20; });
+            //foreach(var item in q)
+            //{
+            //    Console.WriteLine(JsonConvert.SerializeObject(item));
+            //}
+
+            //lambda表达式常用语句块
+            //单参数，隐式类型=>表达式
+            //x => x * 1;
+            //多参数，隐式类型=>表达式
+            //(x,y)=>x*y;
+            //多参数，隐式类型语句块
+            //(x,y)=>{x * y;};
+            //单参数，显示表达式
+            //(int i)=x=>x;
+            //多参数，显示表达式
+            //(int a,int b)=x=>x*y;
+
+            //NumberChanage nc = (x, y) =>
+            //{
+            //    Console.WriteLine("这是lambda表达式。测试结果为：" + x * y);
+            //    return x * y;
+            //};
+            //nc(2000, 10);
+
+            //IEnumerable<Student> lstQuery = lstStu.Where(delegate (Student s) { return s.UAge > 20; });
+
+            #endregion
+
+            #region Lambda 表达式树
+
+            //List<Student> lstStu = new List<Student>();
+            //lstStu.Add(new Student("001", "Tom", 12, "测试地址", "137348934301"));
+            //lstStu.Add(new Student("002", "Tom2", 20, "测试地址2", "137348934302"));
+            //lstStu.Add(new Student("003", "Tom3", 18, "测试地址3", "137348934303"));
+            //lstStu.Add(new Student("004", "Tom4", 19, "测试地址4", "137348934304"));
+            //lstStu.Add(new Student("005", "Tom5", 30, "测试地址5", "137348934305"));
+            //lstStu.Add(new Student("006", "Tom6", 32, "测试地址6", "137348934306"));
+
+            //Expression<Func<int, int, int, int, int>> func = (x, y, z, r) => (z + r) * (x + y);
+            //var compile=func.Compile();
+            //var rt = compile(1, 2, 3, 4);
+            //Console.WriteLine("最简单的表达式树生成的结果为：" + rt);
+
+            //表达式参数声明
+            //ParameterExpression a = Expression.Parameter(typeof(int), "x");
+            //ParameterExpression b = Expression.Parameter(typeof(int), "y");
+            //ParameterExpression c = Expression.Parameter(typeof(int), "z");
+            //ParameterExpression d = Expression.Parameter(typeof(int), "r");
+
+            //Expression exp = Expression.Add(a, b);
+            //Expression exp2 = Expression.Add(c, d);
+
+            //Expression exp3 = Expression.Multiply(exp, exp2);
+
+            //Expression<Func<int, int, int, int, int>> func = Expression.Lambda<Func<int, int, int, int, int>>(exp3, a, b, c, d);
+            //var com=func.Compile();
+            //var rt = com(1, 2, 3, 4);
+            //Console.WriteLine("复杂一点的Expression表达式:" + rt);
+
+            //ParameterExpression a = Expression.Parameter(typeof(int), "x");
+            //ParameterExpression b = Expression.Parameter(typeof(int), "y");
+            //ParameterExpression c = Expression.Parameter(typeof(int), "z");
+            //ParameterExpression d = Expression.Parameter(typeof(int), "r");
+
+            //Expression exp = Expression.Add(a, b);
+            //Expression exp2 = Expression.Multiply(c, d);
+            //Expression exp3 = Expression.Subtract(exp, exp2);
+
+
+            //Expression<Func<int, int, int, int, int>> fun = Expression.Lambda<Func<int, int, int, int, int>>(exp3, a, b, c, d);
+            //var com=fun.Compile();
+            //var rt = com.Invoke(1, 2, 3, 4);
+
+            //Console.WriteLine("表达式树测试结果：" + rt.ToString());
+
+            #endregion
+
+
+            #region 多线程编程,模拟并发操作
+
+            ////声明3个线程
+            //Task task = new Task(mehtod);
+            //task.Start();
+            //task.Wait(5000);
+
+            //Task task2 = new Task(mehtod2);
+            //task2.Start();
+
+            //Task task3 = new Task(mehtod3);
+            //task3.Start();
+
+            ////有一个执行完成，就继续执行
+            //Task.WaitAny(task, task2, task3);
+            //Console.WriteLine("有一个执行完成，就继续执行");
+
+
+            ////等待所有执行完成，就继续执行
+            //Task.WaitAll(task, task2, task3);
+            //Console.WriteLine("等待所有执行完成，就继续执行");
+
+            //带返回值的线程
+            //Task<int> task4 = Task.Run(() => TaskAdd(10, 20));
+            //Console.WriteLine("我拿到了线程的返回值：" + task4.Result);
+
+            //异步线程
+            //Console.WriteLine("我开启了一个子线程。。。。");
+            //var rt = TaskAddAsync(10, 30);
+            //Console.WriteLine("主线程继续干活....");
+            //var value = rt.Result;
+            //Console.WriteLine("我拿到了异步线程的返回值：" + value);
+
+            Console.WriteLine("我需要从百度拿点东西...");
+            Task<string> s = GetHtml();            
+            Console.WriteLine("我是主线程，不管他，我们继续吃饭");
+            
+            Console.WriteLine("我已经成功从百度拿到了东西，大小为：" + s.Result.Length);
+            Console.WriteLine("我目前的状态为 s.IsCanceled:" + s.IsCanceled + "  s.IsCompleted:" + s.IsCompleted + "   s.IsFaulted:" + s.IsFaulted);
+
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken token = source.Token;
+            ManualResetEvent ev = new ManualResetEvent(true);
+
+
+            Task t = new Task(async () =>
+            {
+                if (token.IsCancellationRequested)
+                    return;
+
+                //初始化设置为true时，这里则不阻塞
+                ev.WaitOne();
+
+                await Task.Delay(10000);
+
+            }, token);
+
+            t.Start();
+            source.Cancel();
+            ev.Set();
+            ev.Reset();
+
+
+            #endregion
+
+            #region 并行编程 Parallel对象
+
+
 
             #endregion
 
             Console.ReadKey();
         }
 
+        static void mehtod()
+        {
+            Console.WriteLine("这是方法1,我暂停了5s后继续执行。");
+        }
+
+        static void mehtod2()
+        {
+            Console.WriteLine("这是方法2");
+
+        }
+
+        static void mehtod3()
+        {
+            Console.WriteLine("这是方法3");
+
+        }
+
+        /// <summary>
+        /// 这是一个带返回值的线程方法
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        static int TaskAdd(int x, int y)
+        {
+            return x * y;
+        }
+
+        async static Task<int> TaskAddAsync(int x, int y)
+        {
+            await Task.Delay(1000);
+            Console.WriteLine("我是子线程，我正在休息1s后继续执行");
+            return 1000;
+        }
+
+        /// <summary>
+        /// 模拟从百度下载页面内容
+        /// </summary>
+        /// <returns></returns>
+        async static Task<string> GetHtml()
+        {
+            try
+            {
+                Console.WriteLine("我是子线程，我正在偷偷的从百度下载东西,预计5s完成。");
+                await Task.Delay(5000);
+                HttpClient http = new HttpClient();
+                
+                return await http.GetStringAsync("http://www.baidu.com");
+            }
+            catch (Exception)
+            {
+
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 修复分数
+        /// </summary>
+        static void UpdateScore()
+        {
+            SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123;");
+            SqlCommand sqlCmd = new SqlCommand("select Score from StudentScores2 where UID = 1 ", sqlConn);
+            if (sqlConn.State == System.Data.ConnectionState.Closed)
+            {
+                sqlConn.Open();
+            }
+            var obj = sqlCmd.ExecuteScalar();
+            if (obj != null)
+            {
+                var totalScore = Convert.ToInt32(obj);
+
+                Console.WriteLine("当前分数为：" + totalScore);
+
+                if (totalScore > 0)
+                {
+                    //总分-1
+                    sqlCmd = new SqlCommand("update StudentScores2 set Score = Score - 1 where UID = 1 ", sqlConn);
+                    sqlCmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+
+        delegate int NumberChanage(int n, int y);
+
+        delegate int del(int i, int j);
+
+        static void Add(int i)
+        {
+            Console.WriteLine("这是一个拥有一个参数无返回值的委托方法" + i);
+        }
+
+        /// <summary>
+        /// 这是一个有返回值，两个参数的委托
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        static int Add2(int x, int y)
+        {
+            Console.WriteLine("这是一个有返回值，两个参数的委托。返回值为：" + x * y);
+            return x * y;
+        }
+
+        /// <summary>
+        /// 这是一个参数，而且只能有一个参数，返回bool类型的委托
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        static bool Select(Student s)
+        {
+            return s.UAge > 30;
+        }
 
         /// <summary>
         /// 为了测试git，这是一个测试方法
@@ -444,7 +776,6 @@ namespace MyConsole
             Console.WriteLine("我是 TestMethod2 方法。");
             return string.Format("我今年 {0} 岁了。", age);
         }
-
 
         /// <summary>
         /// 为了测试git，这是一个测试方法
@@ -477,5 +808,6 @@ namespace MyConsole
         {
             stu.UName = "Jack";
         }
+
     }
 }
