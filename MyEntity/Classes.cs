@@ -14,5 +14,7 @@ namespace MyEntity
         public string CID { get; set; }
         public string CName { get; set; }
         public int Persons { get; set; }
+        public int AddUserID { get; set; }
+        public DateTime AddDate { get; set; }
     }
 }
