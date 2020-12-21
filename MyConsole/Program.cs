@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -35,6 +36,8 @@ namespace MyConsole
 
     class Program
     {
+        static int index = 0;
+
         static void Main(string[] args)
         {
             #region 值类型/引用类型，值传递，引用传递
@@ -603,34 +606,34 @@ namespace MyConsole
             //var value = rt.Result;
             //Console.WriteLine("我拿到了异步线程的返回值：" + value);
 
-            Console.WriteLine("我需要从百度拿点东西...");
-            Task<string> s = GetHtml();            
-            Console.WriteLine("我是主线程，不管他，我们继续吃饭");
-            
-            Console.WriteLine("我已经成功从百度拿到了东西，大小为：" + s.Result.Length);
-            Console.WriteLine("我目前的状态为 s.IsCanceled:" + s.IsCanceled + "  s.IsCompleted:" + s.IsCompleted + "   s.IsFaulted:" + s.IsFaulted);
+            //Console.WriteLine("我需要从百度拿点东西...");
+            //Task<string> s = GetHtml();
+            //Console.WriteLine("我是主线程，不管他，我们继续吃饭");
 
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken token = source.Token;
-            ManualResetEvent ev = new ManualResetEvent(true);
+            //Console.WriteLine("我已经成功从百度拿到了东西，大小为：" + s.Result.Length);
+            //Console.WriteLine("我目前的状态为 s.IsCanceled:" + s.IsCanceled + "  s.IsCompleted:" + s.IsCompleted + "   s.IsFaulted:" + s.IsFaulted);
+
+            //CancellationTokenSource source = new CancellationTokenSource();
+            //CancellationToken token = source.Token;
+            //ManualResetEvent ev = new ManualResetEvent(true);
 
 
-            Task t = new Task(async () =>
-            {
-                if (token.IsCancellationRequested)
-                    return;
+            //Task t = new Task(async () =>
+            //{
+            //    if (token.IsCancellationRequested)
+            //        return;
 
-                //初始化设置为true时，这里则不阻塞
-                ev.WaitOne();
+            //    //初始化设置为true时，这里则不阻塞
+            //    ev.WaitOne();
 
-                await Task.Delay(10000);
+            //    await Task.Delay(10000);
 
-            }, token);
+            //}, token);
 
-            t.Start();
-            source.Cancel();
-            ev.Set();
-            ev.Reset();
+            //t.Start();
+            //source.Cancel();
+            //ev.Set();
+            //ev.Reset();
 
 
             #endregion
@@ -641,7 +644,102 @@ namespace MyConsole
 
             #endregion
 
-            Console.ReadKey();
+
+            //SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123");
+            using (SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123"))
+            {
+                if(sqlConn.State == ConnectionState.Closed)
+                {
+                    sqlConn.Open();
+                }
+
+                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM TestDB.DBO.StudentScores2", sqlConn);
+                SqlDataAdapter sqlada = new SqlDataAdapter(sqlCmd);
+                DataSet ds = new DataSet();
+                sqlada.Fill(ds);
+
+                ConcurrentQueue<string> strQueue = new ConcurrentQueue<string>();
+                ConcurrentBag<int> strBag = new ConcurrentBag<int>();
+                for (var i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    strQueue.Enqueue(ds.Tables[0].Rows[i]["UID"].ToString());
+                }
+
+                Console.WriteLine("模拟开始10w个线程");
+                while (!strQueue.IsEmpty)
+                {
+                    Console.WriteLine("当前在执行的线程数：" + strBag.Count);
+                    if (strBag.Count < 3)
+                    {
+                        string str = string.Empty;
+                        if (strQueue.TryDequeue(out str))
+                        {
+                            Task.Factory.StartNew(() =>
+                            {
+                                strBag.Add(1);
+                                Console.WriteLine("开启了一个线程1。。");
+                                //Thread.Sleep(3000);
+                                Console.WriteLine("线程执行完成1。。我消费了：" + str);
+                                //sqlCmd = new SqlCommand("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str + "' where uid="+str, sqlConn);
+                                //sqlCmd.CommandTimeout = 1000 * 50;
+                                //sqlCmd.ExecuteNonQuery();
+
+                            }).ContinueWith((t) =>
+                            {
+                                int num = 0;
+                                strBag.TryTake(out num);
+                            });
+                        }
+                        string str2 = string.Empty;
+                        if (strQueue.TryDequeue(out str2))
+                        {
+                            Task.Factory.StartNew(() =>
+                            {
+                                strBag.Add(1);
+
+                                Console.WriteLine("开启了一个线程2。。");
+                                //Thread.Sleep(3000);
+                                Console.WriteLine("线程执行完成2。。我消费了：" + str2);
+                                //sqlCmd = new SqlCommand("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str2 + "' where uid=" + str2, sqlConn);
+                                //sqlCmd.CommandTimeout = 1000 * 50;
+                                //sqlCmd.ExecuteNonQuery();                                
+
+                            }).ContinueWith((t) =>
+                            {
+                                int num = 0;
+                                strBag.TryTake(out num);
+                            });
+                        }
+                        string str3 = string.Empty;
+                        if (strQueue.TryDequeue(out str3))
+                        {
+                            Task.Factory.StartNew(() =>
+                            {
+                                strBag.Add(1);
+
+                                Console.WriteLine("开启了一个线程3。。");
+                                //Thread.Sleep(3000);
+                                Console.WriteLine("线程执行完成3。。我消费了：" + str3);
+                                //sqlCmd = new SqlCommand("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str3 + "' where uid=" + str3, sqlConn);
+                                //sqlCmd.CommandTimeout = 1000 * 50;
+                                //sqlCmd.ExecuteNonQuery();
+
+                            }).ContinueWith((t) =>
+                            {
+                                int num = 0;
+                                strBag.TryTake(out num);
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("当前在执行的线程数：" + strBag.Count + ";目前不执行，等待上次开启的线程结束。。。。");
+                        Thread.Sleep(1000);
+                    }
+                }
+                Console.WriteLine("模拟结束。一共开启了多个线程：" + index);
+                Console.ReadKey();
+            }
         }
 
         static void mehtod()
@@ -690,7 +788,7 @@ namespace MyConsole
                 Console.WriteLine("我是子线程，我正在偷偷的从百度下载东西,预计5s完成。");
                 await Task.Delay(5000);
                 HttpClient http = new HttpClient();
-                
+
                 return await http.GetStringAsync("http://www.baidu.com");
             }
             catch (Exception)
