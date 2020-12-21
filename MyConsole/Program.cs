@@ -648,7 +648,7 @@ namespace MyConsole
             //SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123");
             using (SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123"))
             {
-                if(sqlConn.State == ConnectionState.Closed)
+                if (sqlConn.State == ConnectionState.Closed)
                 {
                     sqlConn.Open();
                 }
@@ -680,9 +680,8 @@ namespace MyConsole
                                 Console.WriteLine("开启了一个线程1。。");
                                 //Thread.Sleep(3000);
                                 Console.WriteLine("线程执行完成1。。我消费了：" + str);
-                                //sqlCmd = new SqlCommand("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str + "' where uid="+str, sqlConn);
-                                //sqlCmd.CommandTimeout = 1000 * 50;
-                                //sqlCmd.ExecuteNonQuery();
+
+                                Save("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str + "' where uid=" + str);
 
                             }).ContinueWith((t) =>
                             {
@@ -700,9 +699,9 @@ namespace MyConsole
                                 Console.WriteLine("开启了一个线程2。。");
                                 //Thread.Sleep(3000);
                                 Console.WriteLine("线程执行完成2。。我消费了：" + str2);
-                                //sqlCmd = new SqlCommand("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str2 + "' where uid=" + str2, sqlConn);
-                                //sqlCmd.CommandTimeout = 1000 * 50;
-                                //sqlCmd.ExecuteNonQuery();                                
+
+                                Save("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str2 + "' where uid=" + str2);
+
 
                             }).ContinueWith((t) =>
                             {
@@ -720,9 +719,7 @@ namespace MyConsole
                                 Console.WriteLine("开启了一个线程3。。");
                                 //Thread.Sleep(3000);
                                 Console.WriteLine("线程执行完成3。。我消费了：" + str3);
-                                //sqlCmd = new SqlCommand("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str3 + "' where uid=" + str3, sqlConn);
-                                //sqlCmd.CommandTimeout = 1000 * 50;
-                                //sqlCmd.ExecuteNonQuery();
+                                Save("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str3 + "' where uid=" + str3);
 
                             }).ContinueWith((t) =>
                             {
@@ -737,8 +734,25 @@ namespace MyConsole
                         Thread.Sleep(1000);
                     }
                 }
-                Console.WriteLine("模拟结束。一共开启了多个线程：" + index);
+                Console.WriteLine("模拟结束。。。。。。。。。。。。。。。。。。。。");
                 Console.ReadKey();
+            }
+        }
+        private static object obj = new object();
+        static void Save(string sql)
+        {
+            using (SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123"))
+            {
+                lock (obj)
+                {
+                    if (sqlConn.State == ConnectionState.Closed)
+                    {
+                        sqlConn.Open();
+                    }
+                    SqlCommand sqlCmd = new SqlCommand(sql, sqlConn);
+                    sqlCmd.CommandTimeout = 1000 * 50;
+                    sqlCmd.ExecuteNonQuery();
+                }
             }
         }
 
