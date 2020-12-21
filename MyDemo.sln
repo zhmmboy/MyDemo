@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyEntity", "MyEntity\MyEnti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyService", "MyService\MyService.csproj", "{DA7613FB-3BE7-45E1-8586-6C94281341E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyEFConsole", "MyEFConsole\MyEFConsole.csproj", "{97B09F63-A093-4D9C-96C3-2298C44EBA34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DA7613FB-3BE7-45E1-8586-6C94281341E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA7613FB-3BE7-45E1-8586-6C94281341E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA7613FB-3BE7-45E1-8586-6C94281341E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97B09F63-A093-4D9C-96C3-2298C44EBA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97B09F63-A093-4D9C-96C3-2298C44EBA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97B09F63-A093-4D9C-96C3-2298C44EBA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97B09F63-A093-4D9C-96C3-2298C44EBA34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
