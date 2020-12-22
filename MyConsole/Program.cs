@@ -644,98 +644,102 @@ namespace MyConsole
 
             #endregion
 
-
-            //SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123");
-            using (SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123"))
+            while (true)
             {
-                if (sqlConn.State == ConnectionState.Closed)
+                //SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123");
+                using (SqlConnection sqlConn = new SqlConnection("server=.;database=TestDB;uid=sa;pwd=sa123"))
                 {
-                    sqlConn.Open();
-                }
-
-                SqlCommand sqlCmd = new SqlCommand("SELECT * FROM TestDB.DBO.StudentScores2", sqlConn);
-                SqlDataAdapter sqlada = new SqlDataAdapter(sqlCmd);
-                DataSet ds = new DataSet();
-                sqlada.Fill(ds);
-
-                ConcurrentQueue<string> strQueue = new ConcurrentQueue<string>();
-                ConcurrentBag<int> strBag = new ConcurrentBag<int>();
-                for (var i = 0; i < ds.Tables[0].Rows.Count; i++)
-                {
-                    strQueue.Enqueue(ds.Tables[0].Rows[i]["UID"].ToString());
-                }
-
-                Console.WriteLine("模拟开始10w个线程");
-                while (!strQueue.IsEmpty)
-                {
-                    Console.WriteLine("当前在执行的线程数：" + strBag.Count);
-                    if (strBag.Count < 3)
+                    if (sqlConn.State == ConnectionState.Closed)
                     {
-                        string str = string.Empty;
-                        if (strQueue.TryDequeue(out str))
+                        sqlConn.Open();
+                    }
+
+                    SqlCommand sqlCmd = new SqlCommand("SELECT * FROM TestDB.DBO.StudentScores2 where count<3", sqlConn);
+                    SqlDataAdapter sqlada = new SqlDataAdapter(sqlCmd);
+                    DataSet ds = new DataSet();
+                    sqlada.Fill(ds);
+
+                    ConcurrentQueue<string> strQueue = new ConcurrentQueue<string>();
+                    ConcurrentBag<int> strBag = new ConcurrentBag<int>();
+                    for (var i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        strQueue.Enqueue(ds.Tables[0].Rows[i]["UID"].ToString());
+                    }
+
+                    Console.WriteLine("共计：" + strQueue.Count + "条记录待处理！");
+                    Console.WriteLine("模拟多线程开始。。。。。当前系统时间：" + DateTime.Now);
+                    while (!strQueue.IsEmpty)
+                    {
+                        Console.WriteLine("当前在执行的线程数：" + strBag.Count);
+                        if (strBag.Count < 3)
                         {
-                            Task.Factory.StartNew(() =>
+                            string str = string.Empty;
+                            if (strQueue.TryDequeue(out str))
                             {
-                                strBag.Add(1);
-                                Console.WriteLine("开启了一个线程1。。");
+                                Task.Factory.StartNew(() =>
+                                {
+                                    strBag.Add(1);
+                                    Console.WriteLine("开启了一个线程1。。");
                                 //Thread.Sleep(3000);
                                 Console.WriteLine("线程执行完成1。。我消费了：" + str);
 
-                                Save("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str + "' where uid=" + str);
+                                    Save("UPDATE TestDB.DBO.StudentScores2 SET Count=Count+1 where uid=" + str);
 
-                            }).ContinueWith((t) =>
+                                }).ContinueWith((t) =>
+                                {
+                                    int num = 0;
+                                    strBag.TryTake(out num);
+                                });
+                            }
+                            string str2 = string.Empty;
+                            if (strQueue.TryDequeue(out str2))
                             {
-                                int num = 0;
-                                strBag.TryTake(out num);
-                            });
-                        }
-                        string str2 = string.Empty;
-                        if (strQueue.TryDequeue(out str2))
-                        {
-                            Task.Factory.StartNew(() =>
-                            {
-                                strBag.Add(1);
+                                Task.Factory.StartNew(() =>
+                                {
+                                    strBag.Add(1);
 
-                                Console.WriteLine("开启了一个线程2。。");
+                                    Console.WriteLine("开启了一个线程2。。");
                                 //Thread.Sleep(3000);
                                 Console.WriteLine("线程执行完成2。。我消费了：" + str2);
 
-                                Save("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str2 + "' where uid=" + str2);
+                                    Save("UPDATE TestDB.DBO.StudentScores2 SET Count=Count+1 where uid=" + str2);
 
 
-                            }).ContinueWith((t) =>
+                                }).ContinueWith((t) =>
+                                {
+                                    int num = 0;
+                                    strBag.TryTake(out num);
+                                });
+                            }
+                            string str3 = string.Empty;
+                            if (strQueue.TryDequeue(out str3))
                             {
-                                int num = 0;
-                                strBag.TryTake(out num);
-                            });
-                        }
-                        string str3 = string.Empty;
-                        if (strQueue.TryDequeue(out str3))
-                        {
-                            Task.Factory.StartNew(() =>
-                            {
-                                strBag.Add(1);
+                                Task.Factory.StartNew(() =>
+                                {
+                                    strBag.Add(1);
 
-                                Console.WriteLine("开启了一个线程3。。");
+                                    Console.WriteLine("开启了一个线程3。。");
                                 //Thread.Sleep(3000);
                                 Console.WriteLine("线程执行完成3。。我消费了：" + str3);
-                                Save("UPDATE TestDB.DBO.StudentScores2 SET Remark='" + str3 + "' where uid=" + str3);
+                                    Save("UPDATE TestDB.DBO.StudentScores2 SET Count=Count+1 where uid=" + str3);
 
-                            }).ContinueWith((t) =>
-                            {
-                                int num = 0;
-                                strBag.TryTake(out num);
-                            });
+                                }).ContinueWith((t) =>
+                                {
+                                    int num = 0;
+                                    strBag.TryTake(out num);
+                                });
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("当前在执行的线程数：" + strBag.Count + ";目前不执行，等待上次开启的线程结束。。。。");
+                            Thread.Sleep(1000);
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("当前在执行的线程数：" + strBag.Count + ";目前不执行，等待上次开启的线程结束。。。。");
-                        Thread.Sleep(1000);
-                    }
+                    Console.WriteLine("模拟多线程结束。。。。。。当前系统时间：" + DateTime.Now);
                 }
-                Console.WriteLine("模拟结束。。。。。。。。。。。。。。。。。。。。");
-                Console.ReadKey();
+                //休息2s
+                Thread.Sleep(2000);
             }
         }
         private static object obj = new object();
