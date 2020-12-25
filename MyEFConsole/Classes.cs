@@ -16,7 +16,14 @@ namespace MyEFConsole
         public string CID { get; set; }
         public string CName { get; set; }
         public int Persons { get; set; }
-        public int AddUserID { get; set; }
+        //面积
+        public decimal Area { get; set; }
+        //所在楼层        
+        public int Floor { get; set; }
+        //楼层高度
+        //public int FloorHeight { get; set; }
+        //public string FloorHeightUnit { get; set; }
+        //public int AddUserID { get; set; }
         public DateTime AddDate { get; set; }
     }
 }
