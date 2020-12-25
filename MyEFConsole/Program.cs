@@ -18,13 +18,13 @@ namespace MyEFConsole
                 using (var db = new StudentDBContext())
                 {
                     //var cls = new Classes();
-                    //cls.CID = "C003";
-                    //cls.CName = "三年级";
+                    //cls.CID = "C001";
+                    //cls.CName = "一年级（小班）";
                     //cls.AddUserID = 1;
-                    //cls.Persons = 430;
+                    //cls.Persons = 35;
                     //cls.AddDate = DateTime.Now;
 
-                    //不进行模型属性验证
+                    ////不进行模型属性验证
                     //db.Configuration.AutoDetectChangesEnabled = false;
                     //db.Configuration.ValidateOnSaveEnabled = false;
 
@@ -86,7 +86,7 @@ namespace MyEFConsole
                     //var single = db.Classes.Where(t => t.CID == "C002").FirstOrDefault();
                     //db.Classes.Remove(single);
                     //db.SaveChanges();
-                    
+
                     #endregion
 
                     #region EF 事务处理

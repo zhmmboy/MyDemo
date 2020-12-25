@@ -18,6 +18,7 @@ namespace MyEFConsole
         public string UID { get; set; }
         public string UName { get; set; }
         public int UAge { get; set; }
+        public string IDCard { get; set; }
         public string Address { get; set; }
         public string Mobile { get; set; }
     }
