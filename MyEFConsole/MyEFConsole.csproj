@@ -70,6 +70,10 @@
     <Compile Include="Migrations\202012251045208_delCol.designer.cs">
       <DependentUpon>202012251045208_delCol.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012271129582_addSomeColumn.cs" />
+    <Compile Include="Migrations\202012271129582_addSomeColumn.designer.cs">
+      <DependentUpon>202012271129582_addSomeColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,6 +94,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012251045208_delCol.resx">
       <DependentUpon>202012251045208_delCol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012271129582_addSomeColumn.resx">
+      <DependentUpon>202012271129582_addSomeColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,7 +9,10 @@
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            //是否使用自动迁移功能
+            AutomaticMigrationsEnabled = false;
+            //是否允许在迁移时允许数据丢失，如果设置未false,在可能发生数据丢失时，则引发异常
+            AutomaticMigrationDataLossAllowed = false;
         }
 
         protected override void Seed(MyEFConsole.StudentDBContext context)

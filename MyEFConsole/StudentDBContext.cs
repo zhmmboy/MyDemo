@@ -28,5 +28,28 @@ namespace MyEFConsole
         public DbSet<Classes> Classes { get; set; }
         public DbSet<Student> Student { get; set; }
         public DbSet<StuClassesRelation> StuClassesRelation { get; set; }
+
+        /// <summary>
+        /// 实现Fluent Api，设置模型的一些属性，映射关系等
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //联合主键
+            //modelBuilder.Entity<Classes>().HasKey(t => new { t.CID, t.CName });
+            ////非数据库生成
+            //modelBuilder.Entity<Classes>().Property(t => t.CID).HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
+            ////最大长度
+            //modelBuilder.Entity<Classes>().Property(t => t.CName).HasMaxLength(100);
+            ////必填项
+            //modelBuilder.Entity<Classes>().Property(t => t.CName).IsRequired();
+            ////属性不映射到数据库
+            //modelBuilder.Entity<Classes>().Ignore(t => t.Floor);
+            ////将列名映射到数据库特定的列名
+            //modelBuilder.Entity<Classes>().Property(t => t.FloorHeight).HasColumnName("Height");
+            //
+            base.OnModelCreating(modelBuilder); 
+        }
+
     }
 }
